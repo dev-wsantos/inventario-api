@@ -2401,19 +2401,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Wellington\\.nuget\\packages\\": {}
+    "C:\\Users\\Basis Tecnologia\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Wellington\\source\\repos\\InventarioAPI\\InventarioAPI\\InventarioAPI.csproj",
+      "projectUniqueName": "D:\\Migracao\\repos\\InventarioAPI\\InventarioAPI\\InventarioAPI.csproj",
       "projectName": "InventarioAPI",
-      "projectPath": "C:\\Users\\Wellington\\source\\repos\\InventarioAPI\\InventarioAPI\\InventarioAPI.csproj",
-      "packagesPath": "C:\\Users\\Wellington\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Wellington\\source\\repos\\InventarioAPI\\InventarioAPI\\obj\\",
+      "projectPath": "D:\\Migracao\\repos\\InventarioAPI\\InventarioAPI\\InventarioAPI.csproj",
+      "packagesPath": "C:\\Users\\Basis Tecnologia\\.nuget\\packages\\",
+      "outputPath": "D:\\Migracao\\repos\\InventarioAPI\\InventarioAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Wellington\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Basis Tecnologia\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventarioAPI.Migrations
 {
     [DbContext(typeof(InventarioApiDbContext))]
-    [Migration("20230810033237_PopularCategorias")]
-    partial class PopularCategorias
+    [Migration("20230810102857_InicioConfiguracoes")]
+    partial class InicioConfiguracoes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,7 +32,7 @@ namespace InventarioAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("ImagemUrl")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
