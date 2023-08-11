@@ -11,7 +11,7 @@ namespace InventarioAPI.Controllers
     public class CategoriasController : ControllerBase
     {
         private readonly InventarioApiDbContext _context;
-        public CategoriasController(InventarioApiDbContext context) 
+        public CategoriasController (InventarioApiDbContext context)
         {
             _context = context;
         }
@@ -19,114 +19,153 @@ namespace InventarioAPI.Controllers
         [HttpGet("{id:int}", Name = "ObterCategoria")]
         public ActionResult<Categoria> Get (int id)
         {
-            var categoria = _context.Categorias
+            try
+            {
+                var categoria = _context.Categorias
                 .Include(p => p.Produtos)
                 .FirstOrDefault(p => p.Id == id);
 
-            if (categoria is null)
-            {
-                return NotFound("Categoria não encontrado.");
-            }
+                if (categoria is null)
+                {
+                    return NotFound("Categoria não encontrado.");
+                }
 
-            // Remover referência cíclica da lista de produtos
-            foreach (var produto in categoria.Produtos)
-            {
-                produto.Categoria = null;
-            }
-           
+                // Remover referência cíclica da lista de produtos
+                foreach (var produto in categoria.Produtos)
+                {
+                    produto.Categoria = null;
+                }
 
-            return categoria;
+
+                return categoria;
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao tratar a solicitação.");
+            }
         }
 
         [HttpGet("Listar")]
         public ActionResult<IEnumerable<Categoria>> ListarCategorias (string nome, bool? situacao)
         {
-            var categoriasQuery = _context.Categorias
+            try
+            {
+                var categoriasQuery = _context.Categorias
                 .Include(c => c.Produtos)
                 .AsQueryable();
 
-            if (!string.IsNullOrEmpty(nome))
-            {
-                categoriasQuery = categoriasQuery.Where(c => c.Nome.Contains(nome));
-            }
-
-            if (situacao.HasValue)
-            {
-                categoriasQuery = categoriasQuery.Where(c => c.Situacao == situacao.Value);
-            }
-
-            var categoriasList = categoriasQuery.ToList();
-
-            var categorias = categoriasList.Select(c => new Categoria
-            {
-                Id = c.Id,
-                Nome = c.Nome,
-                Situacao = c.Situacao,
-                Produtos = c.Produtos.Select(p => new Produto
+                if (!string.IsNullOrEmpty(nome))
                 {
-                    Id = p.Id,
-                    Nome = p.Nome,
-                    Descricao = p.Descricao,
-                    Preco = p.Preco,
-                    Situacao = p.Situacao,
-                    ImagemUrl = p.ImagemUrl,
-                    Estoque = p.Estoque,
-                    DataCadastro = p.DataCadastro
-                }).ToList()
-            }).ToList();
+                    categoriasQuery = categoriasQuery.Where(c => c.Nome.Contains(nome));
+                }
 
-            if (categorias.Count == 0)
-            {
-                return NotFound("Nenhuma categoria encontrada.");
+                if (situacao.HasValue)
+                {
+                    categoriasQuery = categoriasQuery.Where(c => c.Situacao == situacao.Value);
+                }
+
+                var categoriasList = categoriasQuery.ToList();
+
+                var categorias = categoriasList.Select(c => new Categoria
+                {
+                    Id = c.Id,
+                    Nome = c.Nome,
+                    Situacao = c.Situacao,
+                    Produtos = c.Produtos.Select(p => new Produto
+                    {
+                        Id = p.Id,
+                        Nome = p.Nome,
+                        Descricao = p.Descricao,
+                        Preco = p.Preco,
+                        Situacao = p.Situacao,
+                        ImagemUrl = p.ImagemUrl,
+                        Estoque = p.Estoque,
+                        DataCadastro = p.DataCadastro
+                    }).ToList()
+                }).ToList();
+
+                if (categorias.Count == 0)
+                {
+                    return NotFound("Nenhuma categoria encontrada.");
+                }
+
+                return categorias;
             }
+            catch (Exception)
+            {
 
-            return categorias;
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao tratar a solicitação.");
+            }
         }
-
 
         [HttpPost("Cadastrar")]
         public ActionResult Post (Categoria categoria)
         {
-            if (categoria is null)
+            try
             {
-                return BadRequest();
+                if (categoria is null)
+                {
+                    return BadRequest();
+                }
+
+                _context.Categorias?.Add(categoria);
+                _context.SaveChanges();
+
+                return new CreatedAtRouteResult("ObterCategoria", new { id = categoria.Id }, categoria);
             }
+            catch (Exception)
+            {
 
-            _context.Categorias?.Add(categoria);
-            _context.SaveChanges();
-
-            return new CreatedAtRouteResult("ObterCategoria", new { id = categoria.Id }, categoria);
-
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao tratar a solicitação.");
+            }
         }
 
         [HttpPut("Alterar")]
-        public ActionResult Patch (int id, Categoria categoria)
+        public ActionResult Put (int id, Categoria categoria)
         {
-            if (id != categoria.Id)
+            try
             {
-                return BadRequest();
+                if (id != categoria.Id)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest,
+                                       "Não foi possível processar a sua solicitação, verifique os dados enviados");
+                }
+
+                _context.Entry(categoria).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return Ok(categoria);
             }
+            catch (Exception)
+            {
 
-            _context.Entry(categoria).State = EntityState.Modified;
-            _context.SaveChanges();
-
-            return Ok(categoria);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao tratar a solicitação.");
+            }
         }
 
         [HttpDelete("{id:int}")]
         public ActionResult Delete (int id)
         {
-            var categoria = _context.Categorias?.FirstOrDefault(p => p.Id == id);
-
-            if (categoria is null)
+            try
             {
-                return NotFound("Categoria não localizada.");
+                var categoria = _context.Categorias?.FirstOrDefault(p => p.Id == id);
+
+                if (categoria is null)
+                {
+                    return NotFound("Categoria não localizada.");
+                }
+
+                _context.Categorias?.Remove(categoria);
+                _context.SaveChanges();
+
+                return Ok(categoria);
             }
+            catch (Exception)
+            {
 
-            _context.Categorias?.Remove(categoria);
-            _context.SaveChanges();
-
-            return Ok(categoria);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao tratar a solicitação.");
+            }
         }
     }
 }
