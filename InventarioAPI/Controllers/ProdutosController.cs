@@ -18,21 +18,6 @@ namespace InventarioAPI.Controllers
             _context = context;
         }
 
-        //[HttpGet]
-        //public ActionResult<IEnumerable<Produto>> Get ()
-        //{
-        //    var produtos = _context.Produtos
-        //        .Include(p => p.Categoria.Produtos = null)
-        //        .ToList();
-
-        //    if (produtos is null)
-        //    {
-        //        return NotFound("Produtos não encontrados.");
-        //    }
-
-        //    return produtos;
-        //}
-
         [HttpGet("{id:int}", Name = "ObterProduto")]
         public ActionResult<Produto> Get (int id)
         {
@@ -51,7 +36,7 @@ namespace InventarioAPI.Controllers
             return produto;
         }
 
-        [HttpGet("ListarProdutos")]
+        [HttpGet("Listar")]
         public ActionResult<IEnumerable<Produto>> ListarProdutos (string categoria, string descricao, bool? situacao)
         {
             var produtosQuery = _context.Produtos
@@ -79,7 +64,7 @@ namespace InventarioAPI.Controllers
                 produtosQuery = produtosQuery.Where(p => p.Produto.Situacao == situacao.Value);
             }
 
-            var produtosList = produtosQuery
+            var produtos = produtosQuery
                 .Select(pf => new Produto
                 {
                     Id = pf.Produto.Id,
@@ -92,15 +77,20 @@ namespace InventarioAPI.Controllers
                     DataCadastro = pf.Produto.DataCadastro,
                     Categoria = pf.Categoria,
                 })
-                .ToList();
+                .AsNoTracking() .ToList();
 
-            return produtosList;
+            if (produtos is null)
+            {
+                return NotFound("Nenhum produto encontrado.");
+            }
+
+            return produtos;
         }
 
 
 
 
-        [HttpPost("CadastrarProduto")]
+        [HttpPost("Cadastrar")]
         public ActionResult Post (Produto produto)
         {
             if (produto is null)
@@ -115,7 +105,7 @@ namespace InventarioAPI.Controllers
 
         }
 
-        [HttpPut("AlterarProduto")]
+        [HttpPut("Alterar")]
         public ActionResult Patch (int id, Produto produto)
         {
             if (id != produto.Id)
