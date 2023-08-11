@@ -1,6 +1,9 @@
 ﻿using InventarioAPI.Context;
 using InventarioAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace InventarioAPI.Controllers
 {
@@ -15,36 +18,92 @@ namespace InventarioAPI.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<Produto>> Get ()
+        //[HttpGet]
+        //public ActionResult<IEnumerable<Produto>> Get ()
+        //{
+        //    var produtos = _context.Produtos
+        //        .Include(p => p.Categoria.Produtos = null)
+        //        .ToList();
+
+        //    if (produtos is null)
+        //    {
+        //        return NotFound("Produtos não encontrados.");
+        //    }
+
+        //    return produtos;
+        //}
+
+        [HttpGet("{id:int}", Name = "ObterProduto")]
+        public ActionResult<Produto> Get (int id)
         {
-            var produtos = _context.Produtos?.ToList ();
+            var produto = _context.Produtos
+                .Include(p => p.Categoria)
+                .FirstOrDefault(p => p.Id == id);
 
-            if (produtos is null)
-            {
-                return NotFound("Produtos não encontrados.");
-            }
-
-            return produtos;
-        }
-
-        [HttpGet("{id:int}", Name="ObterProduto")]
-        public ActionResult<Produto> Get(int id)
-        {
-            var produto = _context.Produtos?.FirstOrDefault(p => p.Id == id);
-            
             if (produto is null)
             {
                 return NotFound("Produto não encontrado.");
             }
 
+            // para remover a referência cíclica
+            produto.Categoria.Produtos = null;
+
             return produto;
         }
 
-        [HttpPost]
-        public ActionResult Post (Produto produto) 
+        [HttpGet("ListarProdutos")]
+        public ActionResult<IEnumerable<Produto>> ListarProdutos (string categoria, string descricao, bool? situacao)
         {
-            if(produto is null)
+            var produtosQuery = _context.Produtos
+                .Join(_context.Categorias,
+                    p => p.CategoriaId,
+                    c => c.Id,
+                    (produto, categoria) => new
+                    {
+                        Produto = produto,
+                        Categoria = categoria
+                    });
+
+            if (!string.IsNullOrEmpty(categoria))
+            {
+                produtosQuery = produtosQuery.Where(p => p.Categoria.Nome.Contains(categoria));
+            }
+
+            if (!string.IsNullOrEmpty(descricao))
+            {
+                produtosQuery = produtosQuery.Where(p => p.Produto.Nome.Contains(descricao) || p.Produto.Descricao.Contains(descricao));
+            }
+
+            if (situacao.HasValue)
+            {
+                produtosQuery = produtosQuery.Where(p => p.Produto.Situacao == situacao.Value);
+            }
+
+            var produtosList = produtosQuery
+                .Select(pf => new Produto
+                {
+                    Id = pf.Produto.Id,
+                    Nome = pf.Produto.Nome,
+                    Descricao = pf.Produto.Descricao,
+                    Preco = pf.Produto.Preco,
+                    Situacao = pf.Produto.Situacao,
+                    ImagemUrl = pf.Produto.ImagemUrl,
+                    Estoque = pf.Produto.Estoque,
+                    DataCadastro = pf.Produto.DataCadastro,
+                    Categoria = pf.Categoria,
+                })
+                .ToList();
+
+            return produtosList;
+        }
+
+
+
+
+        [HttpPost("CadastrarProduto")]
+        public ActionResult Post (Produto produto)
+        {
+            if (produto is null)
             {
                 return BadRequest();
             }
@@ -56,22 +115,22 @@ namespace InventarioAPI.Controllers
 
         }
 
-        [HttpPut("{id:int}")]
-        public ActionResult Patch(int id, Produto produto)
+        [HttpPut("AlterarProduto")]
+        public ActionResult Patch (int id, Produto produto)
         {
             if (id != produto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(produto).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Entry(produto).State = EntityState.Modified;
             _context.SaveChanges();
 
             return Ok(produto);
         }
 
         [HttpDelete("{id:int}")]
-        public ActionResult Delete(int id)
+        public ActionResult Delete (int id)
         {
             var produto = _context.Produtos?.FirstOrDefault(p => p.Id == id);
 
