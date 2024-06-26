@@ -2,21 +2,21 @@
 
 
 
-## Descrição do Projeto
+## DescriÃ§Ã£o do Projeto
 
-Este repositório contém o código-fonte para uma Restful WebAPI ASP.NET Core que oferece funcionalidades de gerenciamento de categorias e produtos. O sistema permite realizar operações de cadastro, alteração, remoção e listagem de categorias e produtos, com opções de filtragem para facilitar a busca de informações específicas.
+Este repositÃ³rio contÃ©m o cÃ³digo-fonte para uma Rest WebAPI ASP.NET Core que oferece funcionalidades de gerenciamento de categorias e produtos. O sistema permite realizar operaÃ§Ãµes de cadastro, alteraÃ§Ã£o, remoÃ§Ã£o e listagem de categorias e produtos, com opÃ§Ãµes de filtragem para facilitar a busca de informaÃ§Ãµes especÃ­ficas.
 
 ## Tecnologias Utilizadas
 
-- [ASP.NET Core](https://docs.microsoft.com/aspnet/core): Um framework de desenvolvimento web de alto desempenho para criar aplicativos modernos e escaláveis.
+- [ASP.NET Core](https://docs.microsoft.com/aspnet/core): Um framework de desenvolvimento web de alto desempenho para criar aplicativos modernos e escalÃ¡veis.
 - [Entity Framework Core 6](https://docs.microsoft.com/pt-br/ef/core/what-is-new/ef-core-6.0): Um ORM (Object-Relational Mapping) que permite o acesso a bancos de dados de maneira simplificada e orientada a objetos.
-- [C#](https://docs.microsoft.com/dotnet/csharp): Uma linguagem de programação moderna e orientada a objetos da plataforma .NET.
-- [SQL Server](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads): Um sistema de gerenciamento de banco de dados relacional robusto e escalável.
-- [Swagger](https://swagger.io/): Uma ferramenta para documentação e teste de APIs, facilitando a interação com a sua API.
+- [C#](https://docs.microsoft.com/dotnet/csharp): Uma linguagem de programaÃ§Ã£o moderna e orientada a objetos da plataforma .NET.
+- [SQL Server](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads): Um sistema de gerenciamento de banco de dados relacional robusto e escalÃ¡vel.
+- [Swagger](https://swagger.io/): Uma ferramenta para documentaÃ§Ã£o e teste de APIs, facilitando a interaÃ§Ã£o com a sua API.
 
 ## Requisitos do Sistema
 
-- [.NET Core SDK](https://dotnet.microsoft.com/download) - Versão 6
+- [.NET Core SDK](https://dotnet.microsoft.com/download) - VersÃ£o 6
 
 - Ambiente de desenvolvimento de sua escolha (Visual Studio, Visual Studio Code, etc.).
 
@@ -24,15 +24,15 @@ Este repositório contém o código-fonte para uma Restful WebAPI ASP.NET Core que 
 
   
 
-## Configuração
+## ConfiguraÃ§Ã£o
 
-1. Faça o clone deste repositório para o seu ambiente local.
+1. FaÃ§a o clone deste repositÃ³rio para o seu ambiente local.
 
 2. Abra o projeto em sua ferramenta de desenvolvimento escolhida.
 
-3. Configure a conexão com o banco de dados de sua preferência no arquivo `appsettings.json`.
+3. Configure a conexÃ£o com o banco de dados de sua preferÃªncia no arquivo `appsettings.json`.
 
-4. Execute as migrações para criar o esquema do banco de dados:
+4. Execute as migraÃ§Ãµes para criar o esquema do banco de dados:
 
    ```powershell
    dotnet ef database update
@@ -44,11 +44,11 @@ Este repositório contém o código-fonte para uma Restful WebAPI ASP.NET Core que 
 
 ## Endpoints da API
 
-Aqui estão alguns exemplos de endpoints da API:
+Aqui estÃ£o alguns exemplos de endpoints da API:
 
 ### `GET /api/Categorias/id`
 
-Retorna uma categoria através de um identificador único.
+Retorna uma categoria atravÃ©s de um identificador Ãºnico.
 
 Exemplo de uso:
 
@@ -60,7 +60,7 @@ https://localhost:7007/api/Categorias/2
 
 ### `GET /api/Categorias/Listar`
 
-Retorna todos as categorias cadastradas. Aceita dois parâmetros onde podemos filtrar dados pelo nome (string) e pela situação da categoria: Ativo ou Inativo (boolean).
+Retorna todos as categorias cadastradas. Aceita dois parÃ¢metros onde podemos filtrar dados pelo nome (string) e pela situaÃ§Ã£o da categoria: Ativo ou Inativo (boolean).
 
 Exemplo de uso:
 
@@ -76,9 +76,9 @@ https://localhost:7007/api/Categorias/Listar?situacao=true
 
 ### `POST /api/Categorias/Cadastrar`
 
-Utilizando a interface do Swagger UI, clique no endpoint acima e localize o botão **Try it Out** e clique nele. Na área  **Request Body** verifique se a opção ***application/json*** está selecionada. 
+Utilizando a interface do Swagger UI, clique no endpoint acima e localize o botÃ£o **Try it Out** e clique nele. Na Ã¡rea  **Request Body** verifique se a opÃ§Ã£o ***application/json*** estÃ¡ selecionada. 
 
-Deve ser inserido um código JSON conforme modelo abaixo:
+Deve ser inserido um cÃ³digo JSON conforme modelo abaixo:
 
 
 
@@ -94,11 +94,11 @@ Deve ser inserido um código JSON conforme modelo abaixo:
 
 ### `PUT /api/Categorias/Alterar`
 
-Utilizando a interface do **Swagger UI**, clique no endpoint acima e localize o botão **Try it Ou**t e clique nele. Na área  **Request Body** verifique se a opção ***application/json*** está selecionada. 
+Utilizando a interface do **Swagger UI**, clique no endpoint acima e localize o botÃ£o **Try it Ou**t e clique nele. Na Ã¡rea  **Request Body** verifique se a opÃ§Ã£o ***application/json*** estÃ¡ selecionada. 
 
-Na área **Parameters**, insira o id da categoria na qual você deseja atualizar juntamente com os campos que deseja atualizar:
+Na Ã¡rea **Parameters**, insira o id da categoria na qual vocÃª deseja atualizar juntamente com os campos que deseja atualizar:
 
-Deve ser inserido um código JSON conforme o modelo abaixo:
+Deve ser inserido um cÃ³digo JSON conforme o modelo abaixo:
 
 ```json
  {
@@ -113,7 +113,7 @@ Deve ser inserido um código JSON conforme o modelo abaixo:
 
 ### `DELETE /api/Categorias/id`
 
-Exclui uma categoria através de um identificador único e em seguida retorna o item que foi excluído.
+Exclui uma categoria atravÃ©s de um identificador Ãºnico e em seguida retorna o item que foi excluÃ­do.
 
 Exemplo de uso:
 
@@ -125,7 +125,7 @@ https://localhost:7007/api/Categorias/7
 
 ### `GET /api/Produtos/id`
 
-Retorna uma categoria através de um identificador único.
+Retorna uma categoria atravÃ©s de um identificador Ãºnico.
 
 Exemplo de uso:
 
@@ -137,7 +137,7 @@ https://localhost:7007/api/Produtos/3
 
 ### `GET /api/Produtos/Listar`
 
-Retorna todos os produtos cadastradas. Aceita dois parâmetros onde podemos filtrar dados pelo nome da categoria (string), descrição do Produto (string) e pela situação da categoria:  **Ativo/Inativo** (boolean).
+Retorna todos os produtos cadastradas. Aceita dois parÃ¢metros onde podemos filtrar dados pelo nome da categoria (string), descriÃ§Ã£o do Produto (string) e pela situaÃ§Ã£o da categoria:  **Ativo/Inativo** (boolean).
 
 Exemplos de uso:
 
@@ -161,16 +161,16 @@ https://localhost:7007/api/Produtos/Listar?situacao=true
 
 ### `POST /api/Produtos/Cadastrar`
 
-Utilizando a interface do **Swagger UI,** clique no endpoint acima e localize o botão Try it Out e clique nele. Na área  **Request Body** verifique se a opção ***application/json*** está selecionada. 
+Utilizando a interface do **Swagger UI,** clique no endpoint acima e localize o botÃ£o Try it Out e clique nele. Na Ã¡rea  **Request Body** verifique se a opÃ§Ã£o ***application/json*** estÃ¡ selecionada. 
 
-Deve ser inserido um código JSON conforme modelo abaixo:
+Deve ser inserido um cÃ³digo JSON conforme modelo abaixo:
 
 
 
 ```json
 {
 
-  "nome": "Hambúrger Artesanal",
+  "nome": "HambÃºrger Artesanal",
   "descricao": "Feito com carne bovina",
   "preco": 20.43,
   "situacao": true,
@@ -185,19 +185,19 @@ Deve ser inserido um código JSON conforme modelo abaixo:
 
 ### `PUT /api/Produtos/Alterar`
 
-Utilizando a interface do **Swagger UI,** clique no endpoint acima e localize o botão **Try it Out** e clique nele.  Na área **Parameters**, indique o **id** do produto que deseja alterar. Na área  **Request Body**, verifique se a opção ***application/json*** está selecionada. 
+Utilizando a interface do **Swagger UI,** clique no endpoint acima e localize o botÃ£o **Try it Out** e clique nele.  Na Ã¡rea **Parameters**, indique o **id** do produto que deseja alterar. Na Ã¡rea  **Request Body**, verifique se a opÃ§Ã£o ***application/json*** estÃ¡ selecionada. 
 
 
 
-Deve ser inserido um código JSON conforme o modelo abaixo:
+Deve ser inserido um cÃ³digo JSON conforme o modelo abaixo:
 
 
 
 ```json
 {
   "id": 16,
-  "nome": "Hambúrger Artesanal Suíno",
-  "descricao": "Feito com carne suína",
+  "nome": "HambÃºrger Artesanal SuÃ­no",
+  "descricao": "Feito com carne suÃ­na",
   "preco": 30.25,
   "situacao": true,
   "imagemUrl": "http://servidor.com/hamburger-artesanal-suino.jpg",
@@ -213,7 +213,7 @@ Deve ser inserido um código JSON conforme o modelo abaixo:
 
 
 
-Exclui um produto através de um identificador único e em seguida retorna o item que foi excluído.
+Exclui um produto atravÃ©s de um identificador Ãºnico e em seguida retorna o item que foi excluÃ­do.
 
 Exemplo de uso:
 
